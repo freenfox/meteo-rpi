@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<body>
+    <h1>Current temperatur</h1>
+    <p><b>Time of the latest mesure: {{timestamp}}</b></p>
+    <p><b>Current temperatur: {{temperatur}} C</b></p>
+    <p><b>Current humidity: {{humidity}} %</b></p>
+    
+    <h1>Plot the data</h1>
+
+    <form action="{{ url_for('plot') }}", method="POST">
+        <h2>get data from last:</h2>
+        <select name="datatype" id="datatype">
+            <option value="temperature">temperatur</option>
+            <option value="humidity">humidity</option>
+            <option value="temperature humidity">bolth</option> 
+        </select>
+        <select name="timeframe" id="timeframe">
+            <option value="h">last houre</option>
+            <option value="d">last 24h</option>
+            <option value="w">last week</option>
+            <option value="m">last month</option>
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>our new ai feachure</h1>
+    <form action="/ai_command", method="POST">
+        <input type="text" id="message">
+        <button type="submit">Submit</button>
+    </form>
+</body>

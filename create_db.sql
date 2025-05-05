@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS mesurments (
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+	temperature REAL NOT NULL,
+    humidity REAL NOT NULL
+);
