@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+     <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Température & Humidité</title>
+          <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+     </head>
+     <body>
+          <h1>Température et humidité</h1>
+
+          <div class="plot">
+               {% if temp_plot %}
+                    <!-- Graphique avec matplot -->
+                    <img id="graph_temp" src="{{ url_for('serve_plot') }}" alt="Graphique en cours de chargement...">
+               {% else %}
+                    <p class="center">Aucune donnée de température pour le moment</p>
+               {% endif %}
+          </div>
+     </body>
+</html>
+        

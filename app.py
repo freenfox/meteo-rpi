@@ -25,14 +25,46 @@ def index():
         LIMIT 1;
         """
         data = exec_dict(cur, query)[0]
-        #print(data)
+        print(data)
 
     return render_template("index.html", timestamp = data['Timestamp'], humidity = data['humidity'], temperatur = data['temperature'])
 
-@app.route("/plot", methods =['POST', 'GET'])
-def plot():
-    timeframe = request.form.get("timeframe")
+
+# Route pour la page d'affichage des données
+@app.route('/get_data', methods=['GET'])
+def get_data():
+    
+    # Réupération du choix de l'utilisateur
+    datatype = request.args.get('datatype')
+    timeframe = request.args.get('timeframe')
+
+    with connect_db() as cur:
+        query = """
+        SELECT temperature, humidity, Timestamp
+        FROM mesurments
+        ORDER BY Timestamp DESC
+        LIMIT 1;
+        """
+        data = exec_dict(cur, query)[0]
+        #print(data)
+
+    return render_template("index.html", timestamp = data['Timestamp'], humidity = data['humidity'], temperatur = data['temperature'], timeframe = timeframe, datatype = datatype)
+
+
+
+
+
+
+
+
+
+
+@app.route('/serve_plot', methods=['GET'])
+def serve_plot():
+    timeframe = request.args.get("timeframe")
     print(timeframe) # to plug into the query
+    datatype = request.args.get("datatype")
+    print(datatype) # to plug into the query
 
     with connect_db() as cur:
         query = """
@@ -44,11 +76,18 @@ def plot():
         data = exec_dict(cur, query, params=(timeframe,))
         # print(data)
 
+        # format the data
         temp_list = []
         hum_list = []
         for mesurment in data:
             temp_list.append([mesurment['unixepoch(Timestamp)'], mesurment['temperature']])
             hum_list.append([mesurment['unixepoch(Timestamp)'], mesurment['humidity']])
+        
+        # respet the users requested datatype. juste erace the other one
+        if datatype == "temperature":
+            hum_list = []
+        if datatype == "humidity":
+            temp_list = []
         # print(temp_list)
         # print(hum_list)
 
@@ -58,7 +97,6 @@ def plot():
         # Response permet d'envoyer des données binaires
         return Response(img.getvalue(), mimetype='image/png')
 
-@app.route("/serve_plot")
 
 # @app.route("/ai_command", methods =['POST'])
 # def led_command():
@@ -82,5 +120,5 @@ def plot():
 #         GPIO.output(red_pin,GPIO.LOW)
         
 
-
-app.run(host='0.0.0.0',use_reloader=False, port=5000, debug = True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0',use_reloader=False, port=5000, debug = True)

@@ -27,7 +27,7 @@ while True:
             cur.executescript(query)
         print("writing sucessful")
         GPIO.output(17,GPIO.HIGH)
-        time.sleep(1)
+        time.sleep(10)
         GPIO.output(17,GPIO.LOW)
             
     except RuntimeError as error:
