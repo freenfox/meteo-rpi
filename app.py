@@ -1,17 +1,11 @@
 
 from flask import Flask, render_template, request, redirect, send_file, request, Response
-import RPi.GPIO as GPIO
 import time
 import requests
 from db import exec_dict, connect_db
-from matplotlib.figure import Figure
 from io import BytesIO
 from data_plotter import *
 
-red_pin = 17
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(red_pin,GPIO.OUT)
 
 app = Flask(__name__)
 
