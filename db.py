@@ -1,7 +1,7 @@
 import sqlite3
 from contextlib import contextmanager
 
-DB = "db.db"  # TODO: À compléter
+DB = "/home/admin/meteo-rpi/db.db"  # TODO: À compléter
 
 @contextmanager
 def connect_db():

@@ -1,0 +1,27 @@
+[Unit]
+# Description du service
+Description=A web server for meteo-rpi.
+
+# Démarre une fois que le réseau est prêt
+After=network.target
+
+[Service]
+
+
+# Répertoire de travail
+WorkingDirectory=/home/admin/meteo-rpi
+
+# Variables d'environnement
+# Ici, juste le répertoire avec les exécutables
+Environment="PATH=/home/admin/.venv/bin"
+
+# Commande pour démarrer l'application
+ExecStart=gunicorn --bind 0.0.0.0:80 app:app
+
+
+# Redémarre l'application dans le cas où elle viendrait à quitter
+Restart=always
+
+[Install]
+# Lance le service automatiquement à chaque démarrage de la machine
+WantedBy=multi-user.target
