@@ -1,38 +1,56 @@
 <!DOCTYPE html>
-<body>
-        <p>en continuent d'utiliser ce sit, vous acceptez nos <a href="{{ url_for('static', filename='TOS.txt') }}">conditions generalles</a></p>
-    <h1>Current temperatur</h1>
-    <p><b>Time of the latest mesure: {{timestamp}}</b></p>
-    <p><b>Current temperatur: {{temperatur}} C</b></p>
-    <p><b>Current humidity: {{humidity}} %</b></p>
-    
-    <h1>Plot the data</h1>
+<html>
+    <head>
+        <title>Weather Dashboard</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        <div class="warning-banner">
+        <strong>⚠️ Attention:</strong> En continuent d'utiliser ce sit, vous acceptez nos <a href="{{ url_for('static', filename='TOS.txt') }}">conditions généralles</a>
+        </div>
 
-    <form action="{{ url_for('get_data') }}", method="GET">
-        <h2>get data from last:</h2>
-        <select name="datatype" id="datatype">
-            <option value="temperature humidity">bolth</option> 
-            <option value="temperature">temperatur</option>
-            <option value="humidity">humidity</option>
-        </select>
-        <select name="timeframe" id="timeframe">
-            <option value="-1 hour">last houre</option>
-            <option value="-1 day">last 24h</option>
-            <option value="-7 day">last week</option>
-            <option value="-1 month">last month</option>
-        </select>
-        <input type="submit" value="Submit">
-    </form>
+        <div class="full_box">
+            <h1>Current temperatur</h1>
+            <p><b>Time of the latest mesure: {{timestamp}}</b></p>
+            <p><b>Current temperatur: {{temperatur}} C</b></p>
+            <p><b>Current humidity: {{humidity}} %</b></p>
+        </div>
+            
+        <div class="full_box">
+            <div class="half_box">
 
-    <a href="{{ url_for('index') }}">Reset</a>
-
-    {% if timeframe %}
-    <h1>Your plot</h1>
-        <img src="{{ url_for('serve_plot',timeframe = timeframe, datatype = datatype) }}" alt="Graphique" />
-    {% endif %}
-    <h1>Our new and very relyable ai weather forcast</h1>
-    <iframe src="{{ url_for('ai_slop') }}" frameborder="0"></iframe>
-
-
-    
-</body>
+                <h1>Plot the data</h1>
+                
+                <form action="{{ url_for('get_data') }}", method="GET">
+                    <h2>Get data from last:</h2>
+                    <select name="datatype" id="datatype">
+                        <option value="temperature humidity">bolth</option> 
+                        <option value="temperature">temperatur</option>
+                        <option value="humidity">humidity</option>
+                    </select>
+                    <select name="timeframe" id="timeframe">
+                        <option value="-1 hour">last houre</option>
+                        <option value="-1 day">last 24h</option>
+                        <option value="-7 day">last week</option>
+                        <option value="-1 month">last month</option>
+                    </select>
+                    <input type="submit" value="Submit">
+                </form>
+                
+                <a href="{{ url_for('index') }}">Reset</a>
+            </div>
+            
+            <div class="half_box">
+                {% if timeframe %}
+                <h1>Your plot</h1>
+                <img src="{{ url_for('serve_plot',timeframe = timeframe, datatype = datatype) }}" alt="Graphique" />
+                {% endif %}
+            </div>
+        </div>
+            
+        <div class="full_box">
+            <h1>Our new and very relyable ai weather forcast</h1>
+            <iframe src="{{ url_for('ai_slop') }}" frameborder="0"></iframe>
+        </div>
+    </body>
+</html>
