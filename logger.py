@@ -14,6 +14,11 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(4,GPIO.OUT)
 
+# signal all is good
+GPIO.output(4,GPIO.HIGH)
+time.sleep(10)
+GPIO.output(4,GPIO.LOW)
+
 
 while True:
     try:
@@ -27,7 +32,7 @@ while True:
             cur.executescript(query)
         print("writing sucessful")
         GPIO.output(4,GPIO.HIGH)
-        time.sleep(10)
+        time.sleep(1)
         GPIO.output(4,GPIO.LOW)
             
     except RuntimeError as error:
@@ -37,4 +42,4 @@ while True:
         print(f"Exception : {error}")
         sensor.exit ()
         raise error
-    time.sleep(3) #30 seconds sleep
+    time.sleep(30) #30 seconds sleep
