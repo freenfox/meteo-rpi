@@ -30,9 +30,9 @@
     <h1>Your plot</h1>
         <img src="{{ url_for('serve_plot',timeframe = timeframe, datatype = datatype) }}" alt="Graphique" />
     {% endif %}
-    <h1>our new ai feachure</h1>
-    <form action="/ai_command", method="POST">
-        <input type="text" id="message">
-        <button type="submit">Submit</button>
-    </form>
+    <h1>Our new and very relyable ai weather forcast</h1>
+    <iframe src="{{ url_for('ai_slop') }}" frameborder="0"></iframe>
+
+
+    
 </body>

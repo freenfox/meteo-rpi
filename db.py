@@ -1,7 +1,7 @@
 import sqlite3
 from contextlib import contextmanager
 
-DB = "/home/admin/meteo-rpi/db.db"  # TODO: À compléter
+DB = "db.db"  # TODO: À compléter , needs to fe a absolute path for the deamon
 
 @contextmanager
 def connect_db():

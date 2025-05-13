@@ -1,10 +1,11 @@
-
 from flask import Flask, render_template, request, redirect, send_file, request, Response
 import time
 import requests
 from db import exec_dict, connect_db
 from io import BytesIO
 from data_plotter import *
+from datetime import datetime
+import pytz
 
 
 app = Flask(__name__)
@@ -92,26 +93,52 @@ def serve_plot():
         return Response(img.getvalue(), mimetype='image/png')
 
 
-# @app.route("/ai_command", methods =['POST'])
-# def led_command():
-#     message = "what did the user want the state of the light to be? INPUT: "+request.form['message']
 
-#     payload = {
-#         "question": message,
-#         "options": [
-#             {"option": "on", "label": "A"},
-#             {"option": "off", "label": "B"}
-#         ]
-#     }
+def send_request(prompt):
+    data = {
+        "prompt": prompt,
+        "model": "qwen2.5:0.5b",
+        "stream": False,
+    }
+    print(data)
+    response = requests.post("http://localhost:11434/api/generate", json=data)
+    print(response)
+    return response.json()
 
 
-#     if action == 'on':
-#         print("turning led on")
-#         GPIO.output(red_pin,GPIO.HIGH)
+@app.route("/ai_slop")
+def ai_slop():
+    # get latest mesurement from the database
+    with connect_db() as cur:
+        query = """
+        SELECT temperature, humidity, Timestamp
+        FROM mesurments
+        ORDER BY Timestamp DESC
+        LIMIT 1;
+        """
+        current_data = exec_dict(cur, query)[0]
+    
+    # get a mesurment from an houre ago
+    with connect_db() as cur:
+        query = """
+        SELECT temperature, humidity, Timestamp
+        FROM mesurments
+        ORDER BY datetime(Timestamp, '-1 hour') DESC
+        LIMIT 1;
+        """
+        previous_data = exec_dict(cur, query)[0]
 
-#     elif action == 'off':
-#         print("turning led off")
-#         GPIO.output(red_pin,GPIO.LOW)
+
+    cest = pytz.timezone('Europe/Berlin')
+    current_time = datetime.now(cest)
+
+    message = f"you are a parody of meteo expert. Here is the current temperature and humidity: {current_data["temperature"]}, {current_data["humidity"]}. Here is the temperature and humidity from an hour ago: {previous_data["temperature"]}, {previous_data["humidity"]}. The current time is {current_time}. Create a long and detailed analysis of this data, including predicions of the weather for the next week. Given this is for a parody, you can make it up."
+
+    # send message to an local ollama instacence
+    ai_awnser = send_request(message)['response']
+    # print(ai_awnser)
+
+    return ai_awnser
         
 
 if __name__ == "__main__":
