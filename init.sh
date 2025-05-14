@@ -3,7 +3,7 @@ git clone github.com/freenfox/meteo-rpi
 cd meteo-rpi
 python3 -m venv .venv
 source .venv/bin/activate
-pip3 install -r requiements.txt
+pip3 install -r requirements.txt
 
 echo "installing deamons"
 sudo cp meteo-rpi-logger.service /etc/systemd/system/meteo-rpi-logger.service
