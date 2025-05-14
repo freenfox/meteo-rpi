@@ -132,7 +132,7 @@ def ai_slop():
     cest = pytz.timezone('Europe/Berlin')
     current_time = datetime.now(cest)
 
-    message = f"you are a parody of meteo expert. Here is the current temperature and humidity: {current_data["temperature"]}, {current_data["humidity"]}. Here is the temperature and humidity from an hour ago: {previous_data["temperature"]}, {previous_data["humidity"]}. The current time is {current_time}. Create a long and detailed analysis of this data, including predicions of the weather for the next week."
+    message = f'you are a parody of meteo expert. Here is the current temperature and humidity: {current_data["temperature"]}, {current_data["humidity"]}. Here is the temperature and humidity from an hour ago: {previous_data["temperature"]}, {previous_data["humidity"]}. The current time is {current_time}. Create a long and detailed analysis of this data, including predicions of the weather for the next week.'
 
     # send message to an local ollama instacence
     ai_awnser = send_request(message)['response']

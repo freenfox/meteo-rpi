@@ -8,7 +8,7 @@
 
 
 ## Instalation:
-Un systeme unix, avec python3 installe est requis. Pour utiliser le logger, un rasberry py avec un capteur dht22 sur le GPIO3 et alimante en 3,3v est nesessaire. Une LED temoin peut etre installee sur le GPIO4.
+Un systeme unix, avec python3 installe est requis. Pour utiliser le logger, un rasberry py avec un capteur dht22 sur le GPIO4 et alimante en 3,3v est nesessaire. Une LED temoin peut etre installee sur le GPIO17.
 
 Pour utiliser la fonctionalite d'IA, ollama doit etre installe, anci que qwen2.5:0.5b.
 
@@ -22,6 +22,8 @@ Il est nesessaire de mettre le chemain absolut pour la base de donnee.
 
 ## Mesure et recuperation des donnees:
 Les donnees mesurees (a savoire l'humidite et la temperature) sont stoquees dans une base de donee, avec leurs Timestamp. Cela est effectue toutes les 30 secondes. 
+
+La base de donees a le schema suivent: 
 
 Pour avoir la derniere donnee enrejistree (dans l'ideale l'actuelle), on fait la requete:
 ```sql

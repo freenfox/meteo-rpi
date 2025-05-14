@@ -20,7 +20,7 @@ ExecStart=gunicorn --bind 0.0.0.0:80 app:app
 
 
 # Redémarre l'application dans le cas où elle viendrait à quitter
-Restart=always
+# Restart=always
 
 [Install]
 # Lance le service automatiquement à chaque démarrage de la machine

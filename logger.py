@@ -4,20 +4,20 @@ import board
 import time
 import RPi.GPIO as GPIO
 
-# sensor, 3,3v pin 3
-DHT_PIN = board.D3
-sensor = adafruit_dht.DHT22(DHT_PIN)
+# sensor, 3,3v pin 4
+DHT_PIN = board.D4
+sensor = adafruit_dht.DHT22(DHT_PIN, use_pulseio=False)
 
-# led, pin 4
+# led, pin 17
 RED_LED_PIN = 0
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(4,GPIO.OUT)
+GPIO.setup(17,GPIO.OUT)
 
 # signal all is good
-GPIO.output(4,GPIO.HIGH)
+GPIO.output(17,GPIO.HIGH)
 time.sleep(10)
-GPIO.output(4,GPIO.LOW)
+GPIO.output(17,GPIO.LOW)
 
 
 while True:
@@ -31,9 +31,9 @@ while True:
         with connect_db() as cur:
             cur.executescript(query)
         print("writing sucessful")
-        GPIO.output(4,GPIO.HIGH)
+        GPIO.output(17,GPIO.HIGH)
         time.sleep(1)
-        GPIO.output(4,GPIO.LOW)
+        GPIO.output(17,GPIO.LOW)
             
     except RuntimeError as error:
         print(f"Erreur capteur : {error}")

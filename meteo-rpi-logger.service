@@ -1,6 +1,6 @@
 [Unit]
 # Description du service
-Description=A web server.
+Description=A dht22 reader
 
 # Démarre une fois que le réseau est prêt
 After=network.target
@@ -10,7 +10,7 @@ After=network.target
 
 
 # Commande pour démarrer l'application
-ExecStart=/home/admin/meteo-rpi/.venv/bin/python3.11 /home/admin/meteo-rpi/logger.py
+ExecStart=/home/admin/meteo-rpi/.venv/bin/python3 /home/admin/meteo-rpi/logger.py
 
 
 # Redémarre l'application dans le cas où elle viendrait à quitter

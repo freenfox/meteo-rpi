@@ -5,9 +5,11 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip3 install -r requirements.txt
 
+sudo systemctl stop meteo-rpi-web.service
+sudo systemctl stop meteo-rpi-logger.service
 echo "installing deamons"
 sudo cp meteo-rpi-logger.service /etc/systemd/system/meteo-rpi-logger.service
-sudo cp meteo-rpi-logger.service /etc/systemd/system/meteo-rpi-web.service
+sudo cp meteo-rpi-web.service /etc/systemd/system/meteo-rpi-web.service
 sudo systemctl daemon-reload
 
 sudo systemctl enable meteo-rpi-logger.service
