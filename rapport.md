@@ -10,7 +10,7 @@ Voici ton texte corrigé :
 
 Un système Unix, avec Python3 installé, est requis. Pour utiliser le logger, un Raspberry Pi avec un capteur DHT22 sur le GPIO4 et alimenté en 3,3V est nécessaire. Une LED témoin peut être installée sur le GPIO17.
 
-![Schéma](https://crcit.net/c/0638e2c9ae7b4c8783e040f04862aa19)
+![Schéma](cirquit.png)
 
 Pour utiliser la fonctionnalité d'IA, Ollama doit être installé, ainsi que Qwen2.5:0.5b.
 
@@ -27,6 +27,14 @@ Il est nécessaire de mettre le chemin absolu pour la base de données.
 Les données mesurées (à savoir l'humidité et la température) sont stockées dans une base de données, avec leur timestamp. Cela est effectué toutes les 30 secondes.
 
 La base de données a le schéma suivant :
+
+```sql
+CREATE TABLE IF NOT EXISTS mesurments (
+Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+temperature REAL NOT NULL,
+humidity REAL NOT NULL
+);
+```
 
 Pour avoir la dernière donnée enregistrée (idéalement la plus actuelle), on fait la requête :
 
