@@ -1,68 +1,79 @@
-# Rapport de project d'info
+Voici ton texte corrigé :
 
-# Meteo_rpi, par Florent Oppikofer, 3m7
-[Voir sur github.](https://github.com/freenfox/meteo-rpi)
----
+# Rapport de projet d'info
 
+# Meteo\_rpi, par Florent Oppikofer, 3m7
 
+## [Voir sur GitHub.](https://github.com/freenfox/meteo-rpi)
 
+## Installation :
 
-## Instalation:
-Un systeme unix, avec python3 installe est requis. Pour utiliser le logger, un rasberry py avec un capteur dht22 sur le GPIO4 et alimante en 3,3v est nesessaire. Une LED temoin peut etre installee sur le GPIO17.
+Un système Unix, avec Python3 installé, est requis. Pour utiliser le logger, un Raspberry Pi avec un capteur DHT22 sur le GPIO4 et alimenté en 3,3V est nécessaire. Une LED témoin peut être installée sur le GPIO17.
 
-Pour utiliser la fonctionalite d'IA, ollama doit etre installe, anci que qwen2.5:0.5b.
+![Schéma](https://crcit.net/c/0638e2c9ae7b4c8783e040f04862aa19)
 
-Il suffi alors de copier le init.sh au HOME de l'utilisateur admin, et de l'executer, et tout le reste devrait s'installer. Une installation et activation manuelle est aussi possible.
+Pour utiliser la fonctionnalité d'IA, Ollama doit être installé, ainsi que Qwen2.5:0.5b.
 
-Le temoin LED devrait briller pendent 10s pour indiquer que le logger a bien demmarre, pui cligniotera pour 1 seconde a chaque mesure effectuee avec succes.
+Il suffit alors de copier le init.sh dans le HOME de l'utilisateur admin, et de l'exécuter. Tout le reste devrait s'installer. Une installation et activation manuelle est aussi possible.
 
-Le serveur web devrait alors tourner sur le port 80 (celui par defaut de http).
+Le témoin LED devrait briller pendant 10s pour indiquer que le logger a bien démarré, puis clignotera pendant 1 seconde à chaque mesure effectuée avec succès.
 
-Il est nesessaire de mettre le chemain absolut pour la base de donnee.
+Le serveur web devrait alors tourner sur le port 80 (celui par défaut de HTTP).
 
-## Mesure et recuperation des donnees:
-Les donnees mesurees (a savoire l'humidite et la temperature) sont stoquees dans une base de donee, avec leurs Timestamp. Cela est effectue toutes les 30 secondes. 
+Il est nécessaire de mettre le chemin absolu pour la base de données.
 
-La base de donees a le schema suivent: 
+## Mesure et récupération des données :
 
-Pour avoir la derniere donnee enrejistree (dans l'ideale l'actuelle), on fait la requete:
+Les données mesurées (à savoir l'humidité et la température) sont stockées dans une base de données, avec leur timestamp. Cela est effectué toutes les 30 secondes.
+
+La base de données a le schéma suivant :
+
+Pour avoir la dernière donnée enregistrée (idéalement la plus actuelle), on fait la requête :
+
 ```sql
-SELECT temperature, humidity, Timestamp
-FROM mesurments
-ORDER BY Timestamp DESC
+SELECT temperature, humidity, Timestamp  
+FROM measurements  
+ORDER BY Timestamp DESC  
 LIMIT 1;
 ```
 
-De la meme facon on peut aussi en recuperer a tout point dans le passe determine, p.ex. :
+De la même façon, on peut aussi en récupérer à tout point dans le passé déterminé, par exemple :
+
 ```sql
-SELECT temperature, humidity, Timestamp
-FROM mesurments
-ORDER BY datetime(Timestamp, '-1 hour') DESC
+SELECT temperature, humidity, Timestamp  
+FROM measurements  
+ORDER BY datetime(Timestamp, '-1 hour') DESC  
 LIMIT 1;
 ```
 
-Pour une suite de donees sur une periode donnee par l'utilisateur, on utilise
+Pour une suite de données sur une période donnée par l'utilisateur, on utilise :
+
 ```sql
-SELECT temperature, humidity, unixepoch(Timestamp)
-FROM mesurments
-WHERE Timestamp >= datetime('now', ?)
+SELECT temperature, humidity, unixepoch(Timestamp)  
+FROM measurements  
+WHERE Timestamp >= datetime('now', ?)  
 ORDER BY Timestamp DESC
 ```
 
-avec l'interval donnee comme parametre.
+avec l'intervalle donné comme paramètre.
 
-## Creation du graph
+## Création du graphique
 
-Etent donne que le temps a ete recupere en milisecondes UNIX, il est facile de mettre cette donnee sur un axe du graphique.
+Étant donné que le temps a été récupéré en millisecondes UNIX, il est facile de mettre cette donnée sur un axe du graphique.
 
-Il est importent de noter que la pluspart des formes de graphique sont en l'etat actuelle casse etent donne que je n'ai pas des donnees continues sur une longue periode.
+Il est important de noter que la plupart des formes de graphique sont, à l'état actuel, cassées étant donné que je n'ai pas de données continues sur une longue période.
 
-La facon dont il est envoye: l'utilisateur rempli un form avec ce qu'il veut. Ce form recharge ensuite la meme page (index.html), mais avec ces donnees en parametres. ces donnees sont ensuite mise dans l'url de l'image, et la route qui fourni l'image les utilise enfin et fait le graphique.
+La façon dont il est envoyé : l'utilisateur remplit un formulaire avec ce qu'il veut. Ce formulaire recharge ensuite la même page (index.html), mais avec ces données en paramètres. Ces données sont ensuite mises dans l'URL de l'image, et la route qui fournit l'image les utilise enfin pour faire le graphique.
 
-## Fonctionalite d'IA
-Pour ma touche personelle, je me suis dit que je pourrais me moquer de toutes ces start up dont le produit consite en une chose toute simple et absolument pas nouvelle, ni qui ai besoin d'etre ameilloree, et la rend inutilisable en ajoutent une IA mal implementee, et qui a tendence a bien haluciner. J'avais aussi envie de tester les limites du materielle. Une requete est donc fait a un model local minimal sur le rasberrypi, en utilisent ollama. La reponse est ensuite mise dans la page. 
+## Fonctionnalité d'IA
 
-La raison que ce soit un iframe est que si j'attendais la reponse pour envoyer la page, cela prendrait bien trop de temps.
+Pour ma touche personnelle, je me suis dit que je pourrais me moquer de toutes ces start-up dont le produit consiste en une chose toute simple et absolument pas nouvelle, ni qui ait besoin d'être améliorée, et la rendre inutilisable en ajoutant une IA mal implémentée, qui a tendance à bien halluciner. J'avais aussi envie de tester les limites du matériel. Une requête est donc faite à un modèle local minimal sur le Raspberry Pi, en utilisant Ollama. La réponse est ensuite mise dans la page.
 
-## Deploiment
-Les services sont demare automatiquement a l'aide de fichirs .service (deamons). L'etat peut etre verifie a l'aide de `systemctl status <nom_du_service>`. Un serveur gunicorn est utilise. Une autre possibilite que systemd aurait ete de le mettre dans un conteneur docker que l'on peut juste demarre. Ce serait l'option que j'aurait prefere, etent donne qu'elle evite de toucher aux fichiers internes de la machine.
+La raison pour laquelle c'est un iframe est que si j'attendais la réponse pour envoyer la page, cela prendrait bien trop de temps.
+
+## Déploiement
+
+Les services sont démarrés automatiquement à l'aide de fichiers .service (démons). L'état peut être vérifié à l'aide de `systemctl status <nom_du_service>`. Un serveur Gunicorn est utilisé. Une autre possibilité que systemd aurait été de le mettre dans un conteneur Docker que l'on peut juste démarrer. Ce serait l'option que j'aurais préférée, étant donné qu'elle évite de toucher aux fichiers internes de la machine.
+
+## Conclusion
+Le project fonctionne, mais le systemd pas. J'aurait prefere utiliser docker pour pouvoir tester le tout a la maison.
